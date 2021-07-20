@@ -1,3 +1,6 @@
+import os
+import pathlib
+
 class NestedBlockException(Exception):
     pass
 
@@ -39,6 +42,33 @@ class ScalpelSummary:
             summary += sequence + ":\n"
             summary += self.full_sequence(sequence) + "\n"
         return summary
+
+    def generate_files(self, path=None, sequence_strategy="full"):
+        if path:
+            path = os.path.join(path, "scalpel_output")
+        else:
+            path = "scalpel_output"
+        sequences_path = os.path.join(path, "sequences")
+        os.makedirs(sequences_path, exist_ok=True)
+        files_path = os.path.join(path, "files")
+        os.makedirs(files_path, exist_ok=True)
+        for sequence in self.sequences.keys():
+            if sequence_strategy == "full":
+                output = self.full_sequence(sequence)
+                with open(os.path.join(os.path.join(sequences_path, sequence)), "w") as sequence_file:
+                    sequence_file.write(output)
+            if sequence_strategy == "blocks":
+                sequence_path = os.path.join(sequences_path, sequence)
+                os.makedirs(sequence_path, exist_ok=True)
+                for block in self.sequences[sequence]["blocks"]:
+                    filename = sequence + "_" + block["name"]
+                    with open(os. path.join(sequence_path, filename), "w") as block_file:
+                        block_file.write("/n".join(block["commands"]))
+        for file in self.files.keys():
+            with open(os.path.join(files_path, file), "w") as output_file:
+                output_file.write(self.files[file])
+
+        
 
 
 class ScalpelLineProcessor:

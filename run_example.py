@@ -4,3 +4,4 @@ with open(file_path, "r") as input_file:
     text = input_file.read()
     summary = Scalpel.process_string(text)
     print(summary)
+    summary.generate_files(sequence_strategy="blocks")
