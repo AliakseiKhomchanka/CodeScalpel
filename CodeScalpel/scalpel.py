@@ -68,9 +68,7 @@ class ScalpelSummary:
             with open(os.path.join(files_path, file), "w") as output_file:
                 output_file.write(self.files[file])
 
-        
-
-
+                
 class ScalpelLineProcessor:
 
     def __init__(self, text: str):
