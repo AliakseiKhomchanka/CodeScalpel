@@ -23,7 +23,7 @@ An example of such markers is:
  ```
 ```
 As you can see, in addition to normal triple back ticks around the code block, there are annotations after opening the block. 
-The first one, `shell`, is a language indicator, commonly seen on GitHub in README files. 
+The first one, `sh`, is a language indicator, commonly seen on GitHub in README files. Those are unrelated to Scalpel and are ignored by it. 
 The word `scalpel` indicates that this block has been marked for processing by the parser. 
 After that, several Scalpel-specific parameters follow.
 
