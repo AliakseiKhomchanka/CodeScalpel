@@ -1,11 +1,8 @@
-from CodeScalpel.scalpel import ScalpelLineProcessor
 import unittest
-# from unittest import mock
 import os
 import json
-import sys
 
-from CodeScalpel.scalpel import Scalpel, NestedBlockException, NoArgumentsException
+from CodeScalpel.scalpel import Scalpel, NestedBlockException, NoArgumentsException, ArgValueMissingException
 
 
 def get_file_contents(file):
@@ -25,7 +22,7 @@ class TestParser(unittest.TestCase):
         file_contents = get_file_contents("nested_block.md")
         self.assertRaises(NestedBlockException, Scalpel.process_string, file_contents)
 
-    def test_error_no_args_provided(self):
+    def test_no_args_provided_exception(self):
         file_contents = get_file_contents("no_block_args.md")
         self.assertRaises(NoArgumentsException, Scalpel.process_string, file_contents)
 
@@ -34,3 +31,7 @@ class TestParser(unittest.TestCase):
         expected_summary = json.loads(get_file_contents("unmarked_block_summary.json"))
         summary = Scalpel.process_string(file_contents).to_dict()
         assert summary == expected_summary
+
+    def test_missing_arg_value_exception(self):
+        file_contents = get_file_contents("no_arg_value.md")
+        self.assertRaises(ArgValueMissingException, Scalpel.process_string, file_contents)
