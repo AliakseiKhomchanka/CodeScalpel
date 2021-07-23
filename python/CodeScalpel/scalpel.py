@@ -1,5 +1,6 @@
 import os
 import json
+import argparse
 
 class NestedBlockException(Exception):
     pass
@@ -198,3 +199,38 @@ class Scalpel:
         processor.process()
         summary = ScalpelSummary(processor.sequences, processor.files)
         return summary
+
+# -----------------------------------------------------------------------------------------------
+# The following section is for launching the file as the main program with command line arguments
+# -----------------------------------------------------------------------------------------------
+
+
+def get_file_contents(file):
+    with open(file, "r") as file:
+        return file.read()
+
+
+def parse(args):
+    for file in args["files"]:
+        contents = get_file_contents(file)
+        summary = Scalpel.process_string(contents)
+        if "json" in args["output_types"]:
+            summary.output_json_file()
+        if "text" in args["output_types"]:
+            summary.generate_files(args["output_path"], args["strategy"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Process Scalpel parser arguments')
+    parser.add_argument('--strategy', metavar='-s', type=str, default="full",
+                        help='Strategy for sequences files. Possible values: full, blocks')
+    parser.add_argument('--files', metavar='-f', type=str, nargs="+", required=True,
+                        help='Paths to files to process')
+    parser.add_argument('--output_path', metavar='-o', type=str, default=".",
+                        help='Path to the location of output files')
+    parser.add_argument('--output_types', metavar='-t', type=str, nargs="+", default=["text"],
+                        help='Output types. Possible values: text, json')
+    args = vars(parser.parse_args())
+    parse(args)
+
+
