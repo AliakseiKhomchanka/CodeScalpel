@@ -1,5 +1,7 @@
 # CodeScalpel
 
+![example workflow](https://github.com/AliakseiKhomchanka/CodeScalpel/actions/workflows/python-run-tests.yml/badge.svg)
+
 CodeScalpel (also referred to as simply Scalpel further down) is a tool for marking and extracting code snippets in .md files for further testing.
 
 It uses a simple approach to marking executable code while allowing considerable flexibility in selecting and sorting code snippets.
